@@ -3,6 +3,8 @@
 namespace App\Providers;
 
 use Illuminate\Support\ServiceProvider;
+use Illuminate\Support\Facades\Schema;
+use Illuminate\Pagination\Paginator;
 
 class AppServiceProvider extends ServiceProvider
 {
@@ -19,6 +21,15 @@ class AppServiceProvider extends ServiceProvider
      */
     public function boot(): void
     {
-        //
+        // Configurar longitud de índices para MySQL
+        Schema::defaultStringLength(191);
+
+        // Usar Bootstrap para paginación
+        Paginator::useBootstrapFive();
+
+        // Configurar timezone si está definido
+        if (config('app.timezone')) {
+            date_default_timezone_set(config('app.timezone'));
+        }
     }
 }
