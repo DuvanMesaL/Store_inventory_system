@@ -1,61 +1,158 @@
-<p align="center"><a href="https://laravel.com" target="_blank"><img src="https://raw.githubusercontent.com/laravel/art/master/logo-lockup/5%20SVG/2%20CMYK/1%20Full%20Color/laravel-logolockup-cmyk-red.svg" width="400" alt="Laravel Logo"></a></p>
+# Sistema de Inventario Laravel
 
-<p align="center">
-<a href="https://github.com/laravel/framework/actions"><img src="https://github.com/laravel/framework/workflows/tests/badge.svg" alt="Build Status"></a>
-<a href="https://packagist.org/packages/laravel/framework"><img src="https://img.shields.io/packagist/dt/laravel/framework" alt="Total Downloads"></a>
-<a href="https://packagist.org/packages/laravel/framework"><img src="https://img.shields.io/packagist/v/laravel/framework" alt="Latest Stable Version"></a>
-<a href="https://packagist.org/packages/laravel/framework"><img src="https://img.shields.io/packagist/l/laravel/framework" alt="License"></a>
-</p>
+Un sistema completo de gestión de inventario para tiendas locales desarrollado con Laravel.
 
-## About Laravel
+## 🚀 Características
 
-Laravel is a web application framework with expressive, elegant syntax. We believe development must be an enjoyable and creative experience to be truly fulfilling. Laravel takes the pain out of development by easing common tasks used in many web projects, such as:
+- **Dashboard Completo**: Vista general con estadísticas y métricas importantes
+- **Gestión de Productos**: CRUD completo con control de stock
+- **Categorías y Proveedores**: Organización y clasificación de productos
+- **Control de Stock**: Alertas de stock bajo y movimientos de inventario
+- **Interfaz Responsive**: Diseño adaptable para móviles y escritorio
+- **Reportes**: Estadísticas y análisis del inventario
 
-- [Simple, fast routing engine](https://laravel.com/docs/routing).
-- [Powerful dependency injection container](https://laravel.com/docs/container).
-- Multiple back-ends for [session](https://laravel.com/docs/session) and [cache](https://laravel.com/docs/cache) storage.
-- Expressive, intuitive [database ORM](https://laravel.com/docs/eloquent).
-- Database agnostic [schema migrations](https://laravel.com/docs/migrations).
-- [Robust background job processing](https://laravel.com/docs/queues).
-- [Real-time event broadcasting](https://laravel.com/docs/broadcasting).
+## 📋 Requisitos
 
-Laravel is accessible, powerful, and provides tools required for large, robust applications.
+- PHP >= 8.0
+- Composer
+- MySQL/MariaDB
+- Node.js y NPM (opcional, para assets)
 
-## Learning Laravel
+## 🛠️ Instalación
 
-Laravel has the most extensive and thorough [documentation](https://laravel.com/docs) and video tutorial library of all modern web application frameworks, making it a breeze to get started with the framework.
+1. **Clonar el repositorio**
+\`\`\`bash
+git clone <repository-url>
+cd inventory-system
+\`\`\`
 
-You may also try the [Laravel Bootcamp](https://bootcamp.laravel.com), where you will be guided through building a modern Laravel application from scratch.
+2. **Instalar dependencias**
+\`\`\`bash
+composer install
+\`\`\`
 
-If you don't feel like reading, [Laracasts](https://laracasts.com) can help. Laracasts contains thousands of video tutorials on a range of topics including Laravel, modern PHP, unit testing, and JavaScript. Boost your skills by digging into our comprehensive video library.
+3. **Configurar el archivo de entorno**
+\`\`\`bash
+cp .env.example .env
+\`\`\`
 
-## Laravel Sponsors
+4. **Generar la clave de aplicación**
+\`\`\`bash
+php artisan key:generate
+\`\`\`
 
-We would like to extend our thanks to the following sponsors for funding Laravel development. If you are interested in becoming a sponsor, please visit the [Laravel Partners program](https://partners.laravel.com).
+5. **Configurar la base de datos**
+Edita el archivo `.env` con tus credenciales de base de datos:
+\`\`\`env
+DB_CONNECTION=mysql
+DB_HOST=127.0.0.1
+DB_PORT=3306
+DB_DATABASE=inventory_system
+DB_USERNAME=tu_usuario
+DB_PASSWORD=tu_contraseña
+\`\`\`
 
-### Premium Partners
+6. **Ejecutar las migraciones**
+\`\`\`bash
+php artisan migrate
+\`\`\`
 
-- **[Vehikl](https://vehikl.com)**
-- **[Tighten Co.](https://tighten.co)**
-- **[Kirschbaum Development Group](https://kirschbaumdevelopment.com)**
-- **[64 Robots](https://64robots.com)**
-- **[Curotec](https://www.curotec.com/services/technologies/laravel)**
-- **[DevSquad](https://devsquad.com/hire-laravel-developers)**
-- **[Redberry](https://redberry.international/laravel-development)**
-- **[Active Logic](https://activelogic.com)**
+7. **Poblar la base de datos con datos de ejemplo**
+\`\`\`bash
+php artisan db:seed
+\`\`\`
 
-## Contributing
+8. **Iniciar el servidor de desarrollo**
+\`\`\`bash
+php artisan serve
+\`\`\`
 
-Thank you for considering contributing to the Laravel framework! The contribution guide can be found in the [Laravel documentation](https://laravel.com/docs/contributions).
+La aplicación estará disponible en `http://localhost:8000`
 
-## Code of Conduct
+## 📊 Funcionalidades Principales
 
-In order to ensure that the Laravel community is welcoming to all, please review and abide by the [Code of Conduct](https://laravel.com/docs/contributions#code-of-conduct).
+### Dashboard
+- Estadísticas generales del inventario
+- Productos con stock bajo
+- Movimientos recientes de stock
+- Valor total del inventario
 
-## Security Vulnerabilities
+### Productos
+- Crear, editar y eliminar productos
+- Control de stock con alertas automáticas
+- Gestión de precios y márgenes
+- Códigos de barras y SKU
+- Filtros y búsqueda avanzada
 
-If you discover a security vulnerability within Laravel, please send an e-mail to Taylor Otwell via [taylor@laravel.com](mailto:taylor@laravel.com). All security vulnerabilities will be promptly addressed.
+### Categorías
+- Organización de productos por categorías
+- Estadísticas por categoría
 
-## License
+### Proveedores
+- Gestión completa de proveedores
+- Información de contacto
+- Productos por proveedor
 
-The Laravel framework is open-sourced software licensed under the [MIT license](https://opensource.org/licenses/MIT).
+### Control de Stock
+- Movimientos de entrada, salida y ajustes
+- Historial completo de movimientos
+- Alertas automáticas de stock bajo
+
+## 🎨 Tecnologías Utilizadas
+
+- **Backend**: Laravel 9
+- **Frontend**: Blade Templates + Tailwind CSS
+- **Base de Datos**: MySQL
+- **Iconos**: Font Awesome
+- **Estilos**: Tailwind CSS
+
+## 📱 Capturas de Pantalla
+
+El sistema incluye:
+- Dashboard con métricas importantes
+- Lista de productos con filtros
+- Formularios de creación y edición
+- Alertas visuales para stock bajo
+- Interfaz responsive para móviles
+
+## 🔧 Personalización
+
+### Agregar nuevos campos a productos
+1. Crear una nueva migración
+2. Actualizar el modelo `Product`
+3. Modificar los formularios en las vistas
+4. Actualizar las validaciones en el controlador
+
+### Personalizar alertas de stock
+Modifica el método `isLowStock()` en el modelo `Product` para cambiar la lógica de alertas.
+
+## 📈 Próximas Funcionalidades
+
+- [ ] Reportes en PDF
+- [ ] Códigos QR para productos
+- [ ] Sistema de ventas básico
+- [ ] Múltiples ubicaciones/almacenes
+- [ ] API REST
+- [ ] Notificaciones por email
+
+## 🤝 Contribuir
+
+1. Fork el proyecto
+2. Crea una rama para tu funcionalidad (`git checkout -b feature/nueva-funcionalidad`)
+3. Commit tus cambios (`git commit -am 'Agregar nueva funcionalidad'`)
+4. Push a la rama (`git push origin feature/nueva-funcionalidad`)
+5. Abre un Pull Request
+
+## 📄 Licencia
+
+Este proyecto está bajo la Licencia MIT. Ver el archivo `LICENSE` para más detalles.
+
+## 📞 Soporte
+
+Si tienes alguna pregunta o necesitas ayuda, puedes:
+- Abrir un issue en GitHub
+- Contactar al desarrollador
+
+---
+
+**¡Gracias por usar nuestro Sistema de Inventario!** 🎉
