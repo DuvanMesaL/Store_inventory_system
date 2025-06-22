@@ -75,11 +75,14 @@ class ProductController extends Controller
 
     public function show(Product $product)
     {
-        $product->load(['category', 'supplier', 'stockMovements' => function($query) {
-            $query->orderBy('created_at', 'desc')->limit(20);
-        }]);
+        $product->load(['category', 'supplier']);
 
-        return view('products.show', compact('product'));
+        $stockMovements = $product->stockMovements()
+            ->orderBy('created_at', 'desc')
+            ->limit(20)
+            ->get();
+
+        return view('products.show', compact('product', 'stockMovements'));
     }
 
     public function edit(Product $product)

@@ -7,7 +7,7 @@ use App\Models\User;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\Auth;
-use Illuminate\Auth\Events\Registered;
+use App\Notifications\WelcomeUser;
 
 class RegisterController extends Controller
 {
@@ -31,9 +31,11 @@ class RegisterController extends Controller
             'password' => Hash::make($request->password),
             'phone' => $request->phone,
             'role' => 'employee', // Rol por defecto
+            'email_verified_at' => now(), // Marcar como verificado automáticamente
         ]);
 
-        event(new Registered($user));
+        // Enviar email de bienvenida
+        $user->notify(new WelcomeUser());
 
         Auth::login($user);
 
