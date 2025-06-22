@@ -4,7 +4,8 @@ namespace App\Console\Commands;
 
 use Illuminate\Console\Command;
 use App\Services\BrevoMailService;
-use App\Models\User;
+use App\Mail\TestEmail;
+use Illuminate\Support\Facades\Mail;
 
 class TestBrevoConnection extends Command
 {
@@ -23,26 +24,18 @@ class TestBrevoConnection extends Command
         $this->info('Probando conexión con Brevo SMTP...');
 
         try {
-            // Probar con Laravel Mail
-            \Mail::raw('Este es un email de prueba desde Laravel con Brevo SMTP.', function ($message) use ($email) {
-                $message->to($email)
-                        ->subject('🧪 Prueba de Conexión - Sistema de Inventario');
-            });
+            // Probar con el nuevo template
+            Mail::to($email)->send(new TestEmail());
 
             $this->info('✅ Email de prueba enviado exitosamente a: ' . $email);
 
-            // Probar servicio de Brevo
+            // Probar servicio de Brevo API
             $brevoService = new BrevoMailService();
 
             $result = $brevoService->sendTransactionalEmail([
                 'to' => [['email' => $email, 'name' => 'Usuario de Prueba']],
                 'subject' => '🚀 Prueba de API Brevo - Sistema de Inventario',
-                'htmlContent' => '
-                    <h2>¡Conexión exitosa con Brevo!</h2>
-                    <p>Este email fue enviado usando la API de Brevo directamente.</p>
-                    <p><strong>Fecha:</strong> ' . now()->format('d/m/Y H:i:s') . '</p>
-                    <p><strong>Sistema:</strong> Laravel + Brevo SMTP</p>
-                ',
+                'htmlContent' => view('emails.test')->render(),
                 'textContent' => 'Conexión exitosa con Brevo! Este email fue enviado usando la API de Brevo.',
                 'tags' => ['test', 'inventory-system']
             ]);

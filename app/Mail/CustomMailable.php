@@ -11,25 +11,25 @@ class CustomMailable extends Mailable implements ShouldQueue
 {
     use Queueable, SerializesModels;
 
-    public $subject;
-    public $content;
+    public $emailSubject;
+    public $emailContent;
     public $actionUrl;
     public $actionText;
 
     public function __construct($subject, $content, $actionUrl = null, $actionText = null)
     {
-        $this->subject = $subject;
-        $this->content = $content;
+        $this->emailSubject = $subject;
+        $this->emailContent = $content;
         $this->actionUrl = $actionUrl;
         $this->actionText = $actionText;
     }
 
     public function build()
     {
-        return $this->subject($this->subject)
+        return $this->subject($this->emailSubject)
                     ->view('emails.custom')
                     ->with([
-                        'content' => $this->content,
+                        'content' => $this->emailContent,
                         'actionUrl' => $this->actionUrl,
                         'actionText' => $this->actionText,
                     ]);
