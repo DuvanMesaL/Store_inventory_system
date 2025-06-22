@@ -61,19 +61,28 @@ class Product extends Model
     {
         $previousStock = $this->stock_quantity;
 
-        if ($type === 'in') {
-            $this->stock_quantity += $quantity;
-        } elseif ($type === 'out') {
-            $this->stock_quantity -= $quantity;
-        } elseif ($type === 'adjustment') {
-            $this->stock_quantity = $quantity;
+        switch ($type) {
+            case 'in':
+                $this->stock_quantity += $quantity;
+                break;
+            case 'out':
+                if ($quantity > $this->stock_quantity) {
+                    throw new \Exception('No hay suficiente stock disponible');
+                }
+                $this->stock_quantity -= $quantity;
+                break;
+            case 'adjustment':
+                $this->stock_quantity = $quantity;
+                $quantity = abs($quantity - $previousStock); // Calcular la diferencia para el registro
+                break;
+            default:
+                throw new \Exception('Tipo de movimiento no válido');
         }
 
         $this->save();
 
         // Registrar el movimiento
-        StockMovement::create([
-            'product_id' => $this->id,
+        $this->stockMovements()->create([
             'type' => $type,
             'quantity' => $quantity,
             'previous_stock' => $previousStock,
@@ -81,6 +90,8 @@ class Product extends Model
             'reason' => $reason,
             'reference' => $reference
         ]);
+
+        return $this;
     }
 
     public function scopeLowStock($query)

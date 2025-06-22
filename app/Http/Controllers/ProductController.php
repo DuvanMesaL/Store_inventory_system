@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use App\Models\Product;
 use App\Models\Category;
 use App\Models\Supplier;
+use App\Models\StockMovement;
 use Illuminate\Http\Request;
 use Illuminate\Support\Str;
 
@@ -79,7 +80,7 @@ class ProductController extends Controller
 
         $stockMovements = $product->stockMovements()
             ->orderBy('created_at', 'desc')
-            ->limit(20)
+            ->take(20)
             ->get();
 
         return view('products.show', compact('product', 'stockMovements'));
@@ -140,5 +141,40 @@ class ProductController extends Controller
 
         return redirect()->route('products.show', $product)
                         ->with('success', 'Stock actualizado exitosamente.');
+    }
+
+    public function stockMovement(Request $request, Product $product)
+    {
+        $request->validate([
+            'type' => 'required|in:in,out,adjustment',
+            'quantity' => 'required|integer|min:1',
+            'reason' => 'nullable|string|max:255',
+            'reference' => 'nullable|string|max:100'
+        ]);
+
+        // Verificar que no se reduzca más stock del disponible
+        if ($request->type === 'out' && $request->quantity > $product->stock_quantity) {
+            return back()->with('error', 'No puedes reducir más stock del disponible. Stock actual: ' . $product->stock_quantity);
+        }
+
+        try {
+            $product->updateStock(
+                $request->quantity,
+                $request->type,
+                $request->reason,
+                $request->reference
+            );
+
+            $typeText = match($request->type) {
+                'in' => 'agregado',
+                'out' => 'reducido',
+                'adjustment' => 'ajustado',
+                default => 'actualizado'
+            };
+
+            return back()->with('success', "Stock {$typeText} exitosamente. Nuevo stock: {$product->fresh()->stock_quantity}");
+        } catch (\Exception $e) {
+            return back()->with('error', 'Error al actualizar el stock: ' . $e->getMessage());
+        }
     }
 }

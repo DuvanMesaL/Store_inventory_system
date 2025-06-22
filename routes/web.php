@@ -11,6 +11,7 @@ use App\Http\Controllers\Auth\RegisterController;
 use App\Http\Controllers\Auth\ForgotPasswordController;
 use App\Http\Controllers\Auth\ResetPasswordController;
 use App\Http\Controllers\Auth\VerificationController;
+use App\Http\Controllers\StockMovementController;
 
 // Rutas de autenticación
 Route::get('/login', [LoginController::class, 'showLoginForm'])->name('login');
@@ -36,6 +37,10 @@ Route::middleware(['auth', 'verified'])->group(function () {
 
     Route::resource('products', ProductController::class);
     Route::post('products/{product}/update-stock', [ProductController::class, 'updateStock'])->name('products.update-stock');
+    Route::post('products/{product}/stock-movement', [ProductController::class, 'stockMovement'])->name('products.stock-movement');
+
+    // Agregar estas rutas después de las rutas de productos:
+    Route::resource('stock-movements', StockMovementController::class)->only(['index', 'show', 'create', 'store']);
 
     // Rutas que requieren permisos de manager o admin
     Route::middleware(['role:admin,manager'])->group(function () {
